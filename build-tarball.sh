@@ -17,7 +17,7 @@
 
 # This script builds the package.
 # Usage: build-tarball.sh PACKAGE
-# Its output is a tarball: archives/$version/$package-$evrsion.tar.bz2
+# Its output is a tarball: $package-$version.tar.bz2
 
 package="$1"
 
@@ -28,3 +28,5 @@ git clone --depth 1 https://gitlab.com/gnu-clisp/"$package".git
 cd "$package"
 date=`date --utc --iso-8601 | sed -e 's/-//g'`; sed -i -e "/VERSION_NUMBER=/s/\\([0-9][0-9.]*\\).*/\\1-${date}/" version.sh
 make -f Makefile.devel src-distrib
+cd ..
+mv archives/*/*.tar.bz2 .
