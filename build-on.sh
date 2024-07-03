@@ -25,9 +25,9 @@ make="$3"
 set -x
 
 # Unpack the tarball.
-tarfile=`echo "$package"-*.tar.gz`
-packagedir=`echo "$tarfile" | sed -e 's/\.tar\.gz$//'`
-tar xfz "$tarfile"
+tarfile=`echo "$package"-*.tar.bz2`
+packagedir=`echo "$tarfile" | sed -e 's/\.tar\.bz2$//'`
+tar xfj "$tarfile"
 cd "$packagedir" || exit 1
 
 mkdir build
@@ -41,5 +41,7 @@ $make > log2 2>&1; rc=$?; cat log2; test $rc = 0 || exit 1
 
 # Run the tests.
 $make check > log3 2>&1; rc=$?; cat log3; test $rc = 0 || exit 1
+$make extracheck > log4 2>&1; rc=$?; cat log4; test $rc = 0 || exit 1
+$make base-mod-check > log5 2>&1; rc=$?; cat log5; test $rc = 0 || exit 1
 
 cd ..
