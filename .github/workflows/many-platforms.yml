@@ -42,7 +42,7 @@ on:
 env:
   package: clisp
   libsigsegv: libsigsegv-2.14
-  libffcall: libffcall-2.4
+  libffcall: libffcall-2.4.90
 
 jobs:
   build-tarball:
