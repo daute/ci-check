@@ -30,3 +30,7 @@ date=`date --utc --iso-8601 | sed -e 's/-//g'`; sed -i -e "/VERSION_NUMBER=/s/\\
 make -f Makefile.devel src-distrib
 cd ..
 mv archives/*/*.tar.bz2 .
+
+# Fetch dependency sources (uses package 'wget').
+wget https://ftp.gnu.org/gnu/libsigsegv/libsigsegv-2.14.tar.gz
+wget https://ftp.gnu.org/gnu/libffcall/libffcall-2.4.tar.gz
