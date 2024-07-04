@@ -47,7 +47,11 @@ mkdir build
 cd build
 
 # Configure.
-FORCE_UNSAFE_CONFIGURE=1 ../configure --with-libsigsegv-prefix="$prefix" --with-libffcall-prefix="$prefix" $configure_options > log1 2>&1; rc=$?; cat log1; test $rc = 0 || exit 1
+case $prerequisites in
+  *libsigsegv*) libsigsegv_options="--with-libsigsegv-prefix=$prefix" ;;
+  *)            libsigsegv_options="--ignore-absence-of-libsigsegv" ;;
+esac
+FORCE_UNSAFE_CONFIGURE=1 ../configure $libsigsegv_options --with-libffcall-prefix="$prefix" $configure_options > log1 2>&1; rc=$?; cat log1; test $rc = 0 || exit 1
 
 # Build.
 $make > log2 2>&1; rc=$?; cat log2; test $rc = 0 || exit 1
