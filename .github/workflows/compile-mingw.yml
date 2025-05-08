@@ -40,6 +40,46 @@ env:
   libffcall: libffcall-2.4.90
 
 jobs:
+  build-tarball:
+    runs-on: ubuntu-22.04
+    steps:
+      # This is needed because we run a script stored in this repository.
+      - uses: actions/checkout@v4
+      - run: uname -a
+      - run: id
+      - run: env | LC_ALL=C sort
+      - run: pwd
+      # Install Ubuntu packages.
+      # List of packages: https://packages.ubuntu.com/
+      # - run: sudo apt update; sudo apt install ...
+      - run: |
+          ./build-tarball.sh '${{ env.package }}'
+      # Doc: https://github.com/actions/upload-artifact?tab=readme-ov-file#usage
+      - if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-build-tarball-failed
+          path: |
+            ${{ env.package }}/config.cache
+            ${{ env.package }}/config.log
+            ${{ env.package }}/config.status
+            ${{ env.package }}/log[1234]
+          retention-days: 7
+          overwrite: true
+      # Doc: https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts
+      #      https://github.com/actions/upload-artifact?tab=readme-ov-file#usage
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tarball
+          path: |
+            ${{ env.package }}-*.tar.bz2
+            ${{ env.libsigsegv }}.tar.gz
+            ${{ env.libffcall }}.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+          overwrite: true
+
   check-mingw:
     name: make check on mingw
     needs: build-tarball
