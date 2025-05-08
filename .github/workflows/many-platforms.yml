@@ -41,7 +41,7 @@ on:
 # Variables.
 env:
   package: clisp
-  libsigsegv: libsigsegv-2.14
+  libsigsegv: libsigsegv-2.15
   libffcall: libffcall-2.4.90
 
 jobs:
