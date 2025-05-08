@@ -26,6 +26,9 @@ prerequisites="$5"
 
 set -x
 
+# building clisp requires this...
+ulimit -s 8192
+
 # Build and install the prerequisites.
 for prereq in $prerequisites; do
   tar xfz $prereq.tar.gz
